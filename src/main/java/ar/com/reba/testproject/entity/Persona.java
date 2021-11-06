@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@Table(name = "persona", schema = "public", catalog = "reba")
 public class Persona {
     private int personaId;
     private String nombre;
@@ -12,12 +13,14 @@ public class Persona {
     private String documentoTipo;
     private String documentoNumero;
     private String pais;
+    private Integer edad;
     private Collection<Relacion> hijos;
     private Collection<Relacion> padres;
-//    private Collection<Relacion> relacionsByPersonaId;
-//    private Collection<Relacion> relacionsByPersonaId_0;
+    private Collection<Contacto> contactosByPersonaId;
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @SequenceGenerator(name="persona_id_seq",sequenceName="public", allocationSize=1)
     @Column(name = "persona_id")
     public int getPersonaId() {
         return personaId;
@@ -77,6 +80,16 @@ public class Persona {
         this.pais = pais;
     }
 
+    @Basic
+    @Column(name = "edad")
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,7 +104,7 @@ public class Persona {
     }
 
 //    @OneToMany(mappedBy = "personaByHijoId")
-    @OneToMany(mappedBy = "personaByPadreId")
+    @OneToMany(mappedBy = "personaByPadreId", cascade = CascadeType.ALL)
     public Collection<Relacion> getHijos() {
         return hijos;
     }
@@ -101,12 +114,21 @@ public class Persona {
     }
 
 //    @OneToMany(mappedBy = "personaByPadreId")
-    @OneToMany(mappedBy = "personaByHijoId")
+    @OneToMany(mappedBy = "personaByHijoId", cascade = CascadeType.ALL)
     public Collection<Relacion> getPadres() {
         return padres;
     }
 
     public void setPadres(Collection<Relacion> relacionsByPersonaId_0) {
         this.padres = relacionsByPersonaId_0;
+    }
+
+    @OneToMany(mappedBy = "personaByPersonaId", cascade = CascadeType.ALL)
+    public Collection<Contacto> getContactosByPersonaId() {
+        return contactosByPersonaId;
+    }
+
+    public void setContactosByPersonaId(Collection<Contacto> contactosByPersonaId) {
+        this.contactosByPersonaId = contactosByPersonaId;
     }
 }

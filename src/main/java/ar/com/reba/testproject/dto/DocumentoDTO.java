@@ -1,4 +1,4 @@
-package ar.com.reba.testproject.restservice;
+package ar.com.reba.testproject.dto;
 
 public class DocumentoDTO {
     private String numero;

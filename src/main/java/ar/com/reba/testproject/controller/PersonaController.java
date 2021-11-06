@@ -1,11 +1,11 @@
 package ar.com.reba.testproject.controller;
 
-import ar.com.reba.testproject.restservice.PersonaDTO;
+import ar.com.reba.testproject.dto.NuevaPersonaDTO;
+import ar.com.reba.testproject.dto.PersonaDTO;
 import ar.com.reba.testproject.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,5 +40,33 @@ public class PersonaController {
         List<PersonaDTO> personas = personaService.getPersonas();
 
         return personas;
+    }
+
+    @GetMapping("/personas/crear")
+    public String createPersonas(NuevaPersonaDTO body) {
+
+        if(datosPersonaValidar(body)) {
+            personaService.addPersona(body);
+            return "ok";
+        }
+
+        return "not ok";
+    }
+
+    private static boolean datosPersonaValidar(NuevaPersonaDTO body) {
+        Integer EDAD_MINIMA = 18;
+        if(body.getNombre().isEmpty() || body.getNombre().isEmpty()) {
+            return false;
+        }
+
+        if(body.getPais().isEmpty() || body.getDocumento().getNumero().isEmpty() || body.getDocumento().getTipo().isEmpty()) {
+            return false;
+        }
+
+        if(body.getEdad() <= EDAD_MINIMA) {
+            return false;
+        }
+
+        return true;
     }
 }

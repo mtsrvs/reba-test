@@ -4,12 +4,15 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "relacion", schema = "public", catalog = "reba")
 public class Relacion {
     private int relacionId;
     private Persona personaByHijoId;
     private Persona personaByPadreId;
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @SequenceGenerator(name="relacion_id_seq",sequenceName="public", allocationSize=1)
     @Column(name = "relacion_id")
     public int getRelacionId() {
         return relacionId;

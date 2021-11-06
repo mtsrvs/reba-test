@@ -1,10 +1,12 @@
 package ar.com.reba.testproject.service;
 
+import ar.com.reba.testproject.dao.ContactoRepository;
 import ar.com.reba.testproject.dao.PersonaRepository;
+import ar.com.reba.testproject.dto.NuevaPersonaDTO;
+import ar.com.reba.testproject.entity.Contacto;
 import ar.com.reba.testproject.entity.Persona;
-import ar.com.reba.testproject.entity.Relacion;
-import ar.com.reba.testproject.restservice.DocumentoDTO;
-import ar.com.reba.testproject.restservice.PersonaDTO;
+import ar.com.reba.testproject.dto.DocumentoDTO;
+import ar.com.reba.testproject.dto.PersonaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class PersonaService {
 
     @Autowired
     private PersonaRepository personaRepository;
+
+    @Autowired
+    private ContactoRepository contactoRepository;
 
     public List<PersonaDTO> getPersonas() {
         Iterable<Persona> personas = personaRepository.findAll();
@@ -66,5 +71,39 @@ public class PersonaService {
 
         //TODO: podria lanzar una exception
         return false;
+    }
+
+    public void addPersona(NuevaPersonaDTO body) {
+
+        Persona existe = personaRepository.findByDocumentoNumeroAndDocumentoTipoAndPais(
+                body.getDocumento().getNumero(),
+                body.getDocumento().getTipo(),
+                body.getPais());
+
+        if(existe == null) {
+            Persona persona = new Persona();
+
+            persona.setEdad(body.getEdad());
+            persona.setNombre(body.getNombre());
+            persona.setApellido(body.getApellido());
+            persona.setPais(body.getPais());
+            persona.setDocumentoNumero(body.getDocumento().getNumero());
+            persona.setDocumentoTipo(body.getDocumento().getTipo());
+
+            Contacto contacto = new Contacto();
+            contacto.setTipo(body.getContacto().getTipo());
+            contacto.setDescripcion(body.getContacto().getDescripcion());
+            contacto.setPersonaByPersonaId(persona);
+
+            persona.setContactosByPersonaId(new ArrayList<>());
+            persona.getContactosByPersonaId().add(contacto);
+
+            Persona personaRegistro = personaRepository.save(persona);
+
+        } else {
+            //TODO: mensaje que ya existe!
+        }
+
+        return;
     }
 }

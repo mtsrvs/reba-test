@@ -1,19 +1,12 @@
-package ar.com.reba.testproject.restservice;
+package ar.com.reba.testproject.dto;
 
-public class PersonaDTO {
-    private Integer id;
+public class NuevaPersonaDTO {
     private String nombre;
     private String apellido;
     private String pais;
+    private Integer edad;
     private DocumentoDTO documento;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private ContactoDTO contacto;
 
     public String getNombre() {
         return nombre;
@@ -39,11 +32,27 @@ public class PersonaDTO {
         this.pais = pais;
     }
 
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
     public DocumentoDTO getDocumento() {
         return documento;
     }
 
-    public void setDocumento(DocumentoDTO documentoDTO) {
-        this.documento = documentoDTO;
+    public void setDocumento(DocumentoDTO documento) {
+        this.documento = documento;
+    }
+
+    public ContactoDTO getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(ContactoDTO contacto) {
+        this.contacto = contacto;
     }
 }

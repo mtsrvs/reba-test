@@ -34,7 +34,7 @@ public class PersonaService {
             personaDTO.setApellido(p.getApellido());
             personaDTO.setPais(p.getPais());
             personaDTO.setDocumento(new DocumentoDTO());
-            personaDTO.getDocumento().setNumero(p.getDocumentoTipo());
+            personaDTO.getDocumento().setNumero(p.getDocumentoNumero());
             personaDTO.getDocumento().setTipo(p.getDocumentoTipo());
 
             result.add(personaDTO);

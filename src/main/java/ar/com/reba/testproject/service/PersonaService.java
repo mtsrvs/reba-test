@@ -2,11 +2,13 @@ package ar.com.reba.testproject.service;
 
 import ar.com.reba.testproject.dao.ContactoRepository;
 import ar.com.reba.testproject.dao.PersonaRepository;
+import ar.com.reba.testproject.dao.RelacionRepository;
 import ar.com.reba.testproject.dto.NuevaPersonaDTO;
 import ar.com.reba.testproject.entity.Contacto;
 import ar.com.reba.testproject.entity.Persona;
 import ar.com.reba.testproject.dto.DocumentoDTO;
 import ar.com.reba.testproject.dto.PersonaDTO;
+import ar.com.reba.testproject.entity.Relacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class PersonaService {
 
     @Autowired
     private ContactoRepository contactoRepository;
+
+    @Autowired
+    private RelacionRepository relacionRepository;
 
     public List<PersonaDTO> getPersonas() {
         Iterable<Persona> personas = personaRepository.findAll();
@@ -105,5 +110,17 @@ public class PersonaService {
         }
 
         return;
+    }
+
+    public void addRelacion(Integer padreId1, Integer hijoId2) {
+        Relacion relacion = new Relacion();
+
+        Optional<Persona> p1 = personaRepository.findById(padreId1);
+        Optional<Persona> p2 = personaRepository.findById(hijoId2);
+
+        if(p1.isPresent() && p2.isPresent()) {
+            relacion.setPersonaByPadreId(p1.get());
+            relacion.setPersonaByHijoId(p2.get());
+        }
     }
 }

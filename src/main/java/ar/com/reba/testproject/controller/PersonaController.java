@@ -4,8 +4,11 @@ import ar.com.reba.testproject.dto.NuevaPersonaDTO;
 import ar.com.reba.testproject.dto.PersonaDTO;
 import ar.com.reba.testproject.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,56 +20,69 @@ public class PersonaController {
     private PersonaService personaService;
 
     @GetMapping("/personas/{id1}/padre/{id2}")
-    public Boolean esPadreDe(@PathVariable(name="id1") Integer id1,
+    public ResponseEntity esPadreDe(@PathVariable(name="id1") Integer id1,
                              @PathVariable(name="id2") Integer id2) {
 
         Boolean esPadre = personaService.esPadreDeRelacion(id1, id2);
 
-        return esPadre;
+        return ResponseBuilder.create(esPadre, HttpStatus.OK);
     }
 
     @GetMapping("/relaciones/{id1}/{id2}")
-    public String validarRelacion(@PathVariable(name="id1") Integer id1,
+    public ResponseEntity validarRelacion(@PathVariable(name="id1") Integer id1,
                                   @PathVariable(name="id2") Integer id2) {
 
         String tipoRelacion = personaService.tipoRelacion(id1, id2);
 
-        return tipoRelacion;
+        return ResponseBuilder.create(tipoRelacion, HttpStatus.OK);
     }
 
     @GetMapping("/personas")
-    public List<PersonaDTO> getPersonas() {
+    public ResponseEntity getPersonas() {
 
         List<PersonaDTO> personas = personaService.getPersonas();
 
-        return personas;
+        return ResponseBuilder.create(personas, HttpStatus.OK);
+//        return new ResponseEntity<>(personas, HttpStatus.OK);
     }
 
-    @GetMapping("/personas/crear")
-    public String createPersonas(NuevaPersonaDTO body) {
+    @PostMapping("/personas/crear")
+    public ResponseEntity createPersonas(NuevaPersonaDTO body) {
 
-        if(datosPersonaValidar(body)) {
+        String errorMensaje = datosPersonaValidar(body);
+
+//        if(datosPersonaValidar(body)) {
+        if(errorMensaje == null) {
             personaService.addPersona(body);
-            return "ok";
+            return ResponseBuilder.create(HttpStatus.CREATED);
         }
 
-        return "not ok";
+        return ResponseBuilder.create(errorMensaje, HttpStatus.BAD_REQUEST);
     }
 
-    private static boolean datosPersonaValidar(NuevaPersonaDTO body) {
+    @PostMapping("/personas/crear/{id1}/padre/{id2}")
+    public ResponseEntity createRelacion(@PathVariable(name="id1") Integer id1,
+                                         @PathVariable(name="id2") Integer id2) {
+
+        personaService.addRelacion(id1, id2);
+        return ResponseBuilder.create(HttpStatus.ACCEPTED);
+    }
+
+    private static String datosPersonaValidar(NuevaPersonaDTO body) {
         Integer EDAD_MINIMA = 18;
-        if(body.getNombre().isEmpty() || body.getNombre().isEmpty()) {
-            return false;
+
+        if(body.getNombre().isEmpty() || body.getApellido().isEmpty()) {
+            return "Los campos nombre y apellido no pueden estar vacios.";
         }
 
         if(body.getPais().isEmpty() || body.getDocumento().getNumero().isEmpty() || body.getDocumento().getTipo().isEmpty()) {
-            return false;
+            return "El pais y los datos de documento no pueden ser vacios.";
         }
 
         if(body.getEdad() <= EDAD_MINIMA) {
-            return false;
+            return "La persona tiene que ser mayor de 18 años.";
         }
 
-        return true;
+        return null;
     }
 }

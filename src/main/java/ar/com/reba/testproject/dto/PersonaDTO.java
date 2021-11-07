@@ -4,6 +4,7 @@ public class PersonaDTO {
     private Integer id;
     private String nombre;
     private String apellido;
+    private Integer edad;
     private String pais;
     private DocumentoDTO documento;
 
@@ -29,6 +30,14 @@ public class PersonaDTO {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
     public String getPais() {

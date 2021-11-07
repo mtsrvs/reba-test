@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public class RelacionEntrePersonas {
 
     private static final String RESPUESTA_FORMATO = "%s %s es %s de %s %s";
+    private static final String RESPUESTA_NO_RELACION = "No hay relación entre las personas";
 
     public static String relacion(Persona p1, Persona p2) {
 
@@ -39,7 +40,7 @@ public class RelacionEntrePersonas {
                     RelacionTipo.TIO.toString(),
                     p1.getNombre(), p1.getApellido());
         }
-        return "No relacion entre las personas";
+        return RESPUESTA_NO_RELACION;
     }
 
     //p1 es hermano de p2

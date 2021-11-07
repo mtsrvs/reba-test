@@ -1,13 +1,12 @@
 package ar.com.reba.testproject.service;
 
-import ar.com.reba.testproject.dao.ContactoRepository;
 import ar.com.reba.testproject.dao.PersonaRepository;
 import ar.com.reba.testproject.dao.RelacionRepository;
+import ar.com.reba.testproject.dto.DocumentoDTO;
 import ar.com.reba.testproject.dto.NuevaPersonaDTO;
+import ar.com.reba.testproject.dto.PersonaDTO;
 import ar.com.reba.testproject.entity.Contacto;
 import ar.com.reba.testproject.entity.Persona;
-import ar.com.reba.testproject.dto.DocumentoDTO;
-import ar.com.reba.testproject.dto.PersonaDTO;
 import ar.com.reba.testproject.entity.Relacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,8 @@ public class PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
 
-    @Autowired
-    private ContactoRepository contactoRepository;
+//    @Autowired
+//    private ContactoRepository contactoRepository;
 
     @Autowired
     private RelacionRepository relacionRepository;
@@ -123,5 +122,7 @@ public class PersonaService {
             relacion.setPersonaByPadreId(p1.get());
             relacion.setPersonaByHijoId(p2.get());
         }
+
+        relacionRepository.save(relacion);
     }
 }

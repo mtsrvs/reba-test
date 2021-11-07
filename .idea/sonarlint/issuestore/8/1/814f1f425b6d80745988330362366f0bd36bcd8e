@@ -1,0 +1,13 @@
+
+M
+java:S1135N"2Complete the task associated to this TODO comment.(»´Îúÿÿÿÿ
+^
+java:S1854k"CRemove this useless assignment to local variable "personaRegistro".(®Ï‘Ñıÿÿÿÿ
+1
+java:S3626q"Remove this redundant jump.(ûÁİ…
+O
+java:S1481k"4Remove this unused "personaRegistro" local variable.(®Ï‘Ñıÿÿÿÿ
+M
+java:S1135n"2Complete the task associated to this TODO comment.(ßË™úÿÿÿÿ
+i
+java:S36557"NCall "persona.isPresent()" or "!persona.isEmpty()" before accessing the value.(÷Ô•éøÿÿÿÿ
